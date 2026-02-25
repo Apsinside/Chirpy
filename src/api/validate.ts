@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { resolveTlsa } from "node:dns";
+import { BadRequestError } from "../errors.js";
 
 export async function handlerValidate(req: Request, res: Response){
     type parameters = {
@@ -8,7 +8,7 @@ export async function handlerValidate(req: Request, res: Response){
 
     const params: parameters = req.body;
     if(params.body.length > 140){
-        throw new Error("Chirp to long");
+        throw new BadRequestError("Chirp is too long. Max length is 140");
     }
 
     res.status(200).json({

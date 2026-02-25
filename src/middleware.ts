@@ -1,5 +1,6 @@
 import {Response, Request, NextFunction } from "express";
 import { config } from "./config.js"
+import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from "./errors.js";
 export function middlewareLogResponses(req: Request, res: Response, next: NextFunction){
     res.on("finish",  ()=>{
         const statusCode = res.statusCode;
@@ -21,10 +22,34 @@ export function errorMiddleware(
   res: Response,
   next: NextFunction,
 ) {
+  let statusCode = 500;
+  let message = "Something went wrong on our end";
+
+  if (err instanceof BadRequestError) {
+    statusCode = 400;
+    message = err.message;
+  } else if (err instanceof UnauthorizedError) {
+    statusCode = 401;
+    message = err.message;
+  } else if (err instanceof ForbiddenError) {
+    statusCode = 403;
+    message = err.message;
+  } else if (err instanceof NotFoundError) {
+    statusCode = 404;
+    message = err.message;
+  }
+
+  if (statusCode >= 500) {
     console.log(err.message);
-    
-    const message = "Something went wrong on our end";
-    res.status(500).json({
-        error: message,
-    });
+  }
+
+  res.status(statusCode).json({
+    "error" : message,
+  })
+
 }
+
+
+
+
+
