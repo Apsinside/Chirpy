@@ -8,19 +8,13 @@ export async function handlerValidate(req: Request, res: Response){
 
     const params: parameters = req.body;
     if(params.body.length > 140){
-        res.status(400).send(
-            JSON.stringify({
-                error: "Chirp is too long",
-            })
-        )
-        return;
+        throw new Error("Chirp to long");
     }
 
-    res.status(200).send(
-        JSON.stringify({
+    res.status(200).json({
             cleanedBody: filterProfanity(params.body),       
         })
-    )
+    
 }
 
 function filterProfanity(text: string) : string{

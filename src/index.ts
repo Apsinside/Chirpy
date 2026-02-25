@@ -1,23 +1,31 @@
 import express from "express";
 import { handlerReadiness } from "./api/readiness.js";
-import { middlewareLogResponses, middlewareMetricsInc } from "./middleware.js";
+import { middlewareLogResponses, middlewareMetricsInc, errorMiddleware } from "./middleware.js";
 import { handlerMetrics} from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
 import { handlerValidate } from "./api/validate.js";
 const app = express();
 const PORT = 8080;
 
+app.use(middlewareLogResponses);
 app.use(express.json());
 
 app.use("/app", middlewareMetricsInc, express.static("src/app"))
 
-app.use("/admin/healthz", handlerReadiness);
-app.use("/admin/metrics",handlerMetrics);
-app.post("/admin/reset", handlerReset);
+app.get("/api/healthz", (req, res, next) => {
+  Promise.resolve(handlerReadiness(req, res)).catch(next);
+});
+app.get("/admin/metrics", (req, res, next) => {
+  Promise.resolve(handlerMetrics(req, res)).catch(next);
+});
+app.post("/admin/reset", (req, res, next) => {
+  Promise.resolve(handlerReset(req, res)).catch(next);
+});
+app.post("/api/validate_chirp", (req, res, next) => {
+  Promise.resolve(handlerValidate(req, res)).catch(next);
+});
 
-app.post("/api/validate_chirp", handlerValidate);
-
-app.use(middlewareLogResponses);
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
