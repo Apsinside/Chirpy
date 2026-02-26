@@ -4,6 +4,14 @@ import { middlewareLogResponses, middlewareMetricsInc, errorMiddleware } from ".
 import { handlerMetrics} from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
 import { handlerValidate } from "./api/validate.js";
+import { config } from "./config.js";
+import postgres from "postgres";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { drizzle } from "drizzle-orm/postgres-js";
+
+const migrationClient = postgres(config.db.url, { max: 1 });
+await migrate(drizzle(migrationClient), config.db.migrationConfig);
+
 const app = express();
 const PORT = 8080;
 
@@ -30,4 +38,3 @@ app.use(errorMiddleware);
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 })
-
