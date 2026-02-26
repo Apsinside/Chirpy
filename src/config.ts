@@ -2,6 +2,7 @@ import type { MigrationConfig } from "drizzle-orm/migrator";
 
 type APIConfig = {
   fileserverHits: number;
+  platform: string;
 };
 
 type DBConfig = {
@@ -13,7 +14,6 @@ type Config = {
   api: APIConfig;
   db: DBConfig;
 };
-
 
 process.loadEnvFile();
 
@@ -33,6 +33,7 @@ const migrationConfig: MigrationConfig = {
 export const config : Config = {
   api: {
     fileserverHits: 0,
+    platform : envOrThrow("PLATFORM")
   },
   db: {
     url:  envOrThrow("DB_URL"),
