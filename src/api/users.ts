@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { BadRequestError, UnauthorizedError } from "../errors.js";
 import { NewUser } from "../db/schema.js";
-import { createUser } from "../db/queries.js";
+import { createUser } from "../db/queries/users.js";
 
 export async function handlerCreateUser(req: Request, res: Response){
     type parameters = {

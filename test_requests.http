@@ -38,5 +38,11 @@ content-type: application/json
 
 {
   "body": "I'm always kind!",
-  "userId": "76bb6173-d903-4ee2-a33b-749a307097ea"
+  "userId": "4fa6eb8a-6e47-4a81-8a69-2bbd6c9c0d2e"
 }
+
+###
+
+GET http://localhost:8080/api/chirps HTTP/1.1
+
+###

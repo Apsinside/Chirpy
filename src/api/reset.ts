@@ -1,7 +1,7 @@
 import {Response, Request} from "express";
 import {config} from "../config.js"
 import { UnauthorizedError } from "../errors.js";
-import { resetUsers } from "../db/queries.js";
+import { resetUsers } from "../db/queries/users.js";
 
 export async function handlerReset(req: Request, res: Response){
     if(config.api.platform !== "dev"){

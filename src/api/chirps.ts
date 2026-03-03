@@ -1,8 +1,15 @@
 import { Request, Response } from "express";
 import { BadRequestError } from "../errors.js";
-import { createChirp } from "../db/queries.js";
+import { createChirp, getChirps } from "../db/queries/chirps.js";
+import { resetUsers } from "src/db/queries/users.js";
 
-export async function  handlerChirp(req: Request, res: Response){
+export async function handlerGetChirp(req: Request, res: Response){
+    const result = await getChirps();
+    console.log(result);
+    res.status(200).json(result);
+}
+
+export async function  handlerCreateChirp(req: Request, res: Response){
     type parameters = {
         body: string;
         userId: string;
@@ -20,7 +27,7 @@ export async function  handlerChirp(req: Request, res: Response){
             userId: params.userId
         }
     )
-    
+
     if(!result){
         throw new BadRequestError("Failed to create chirp");
     }
