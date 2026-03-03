@@ -1,15 +1,27 @@
 import { Request, Response } from "express";
-import { BadRequestError } from "../errors.js";
-import { createChirp, getChirps } from "../db/queries/chirps.js";
-import { resetUsers } from "src/db/queries/users.js";
+import { BadRequestError, NotFoundError } from "../errors.js";
+import { createChirp, getChirp, getChirps } from "../db/queries/chirps.js";
 
-export async function handlerGetChirp(req: Request, res: Response){
-    const result = await getChirps();
-    console.log(result);
+export async function handlerChirpsGet(req: Request, res: Response){
+    const {chirpId} =  req.params;
+    if(typeof chirpId !== "string"){
+        throw new BadRequestError("Invalid chirp ID");
+    }
+
+    const result = await getChirp(chirpId);
+    if (!result) {
+        throw new NotFoundError(`Chirp with chirpId: ${chirpId} not found`);
+    }
+
     res.status(200).json(result);
 }
 
-export async function  handlerCreateChirp(req: Request, res: Response){
+export async function handlerChirpsRetrieve(req: Request, res: Response){
+    const result = await getChirps();
+    res.status(200).json(result);
+}
+
+export async function  handlerChirpsCreate(req: Request, res: Response){
     type parameters = {
         body: string;
         userId: string;
