@@ -20,7 +20,29 @@ POST http://localhost:8080/api/users HTTP/1.1
 content-type: application/json
 
 {
-  "email": "hello@chirpy.com"
+  "email": "hello@chirpy.com",
+  "password": "1234"
+}
+
+###
+
+POST http://localhost:8080/api/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "hello@chirpy.com",
+  "password": "1234"
+}
+
+###
+
+
+POST http://localhost:8080/api/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "hello@chirpy.com",
+  "password": "5678"
 }
 
 ###

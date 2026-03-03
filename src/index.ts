@@ -8,7 +8,7 @@ import { config } from "./config.js";
 import postgres from "postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { handlerCreateUser } from "./api/users.js";
+import { handlerCreateUser, handlerLoginUser } from "./api/users.js";
 import { handlerChirpsCreate, handlerChirpsRetrieve, handlerChirpsGet } from "./api/chirps.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
@@ -44,10 +44,9 @@ app.post("/api/chirps", (req, res, next) => {
 app.post("/api/users", (req, res, next) => {
   Promise.resolve(handlerCreateUser(req,res)).catch(next)
 });
-
-
-
-
+app.post("/api/login", (req, res, next) => {
+  Promise.resolve(handlerLoginUser(req,res)).catch(next)
+});
 
 app.use(errorMiddleware);
 
