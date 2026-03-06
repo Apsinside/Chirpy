@@ -57,10 +57,11 @@ GET http://localhost:8080/admin/metrics HTTP/1.1
 
 POST http://localhost:8080/api/chirps HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHkiLCJzdWIiOiI3YTMwYjExZS02NGNkLTQwZmItYWE4Yy0zNWQzNTU2ZGMxMzgiLCJpYXQiOjE3NzI3OTA4MDIsImV4cCI6MTc3Mjc5NjgwMn0.BGH1RaYpvQ1Ts1Je7xFNb5aB4FPStFnVrVMbBpOYDZ4
 
 {
   "body": "I'm always kind!",
-  "userId": "4fa6eb8a-6e47-4a81-8a69-2bbd6c9c0d2e"
+  "userId": "7a30b11e-64cd-40fb-aa8c-35d3556dc138"
 }
 
 ###

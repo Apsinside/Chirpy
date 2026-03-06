@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import { BadRequestError, NotFoundError, UnauthorizedError } from "../errors.js";
 import { NewUser } from "../db/schema.js";
 import { createUser, getUser } from "../db/queries/users.js";
-import { hashPassword, checkPasswordHash  } from "../auth.js";
+import { hashPassword, checkPasswordHash, makeJWT  } from "../auth.js";
+import { config } from "../config.js";
 
 type parameters = {
     password: string,
     email: string;
+    expiresInSeconds?: number;
 };
 
 type userWithoutPassword = Omit<NewUser, "hashedPassword">;
@@ -50,11 +52,19 @@ export async function handlerLoginUser(req: Request, res: Response){
         throw new UnauthorizedError("Invalid password")
     }
 
-    const resBody : userWithoutPassword = {
+    let jwtExpiration = 3600;
+    if(params.expiresInSeconds){
+        jwtExpiration = Math.min(jwtExpiration, params.expiresInSeconds);
+    }
+
+    const token = makeJWT(user.id, jwtExpiration, config.secret);
+
+    const resBody = {
         id: user.id,
         email: user.email,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
+        updatedAt: user.updatedAt,
+        token: token
     }
 
     res.status(200).json(resBody);
