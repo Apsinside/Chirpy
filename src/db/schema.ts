@@ -1,3 +1,4 @@
+import { timestamptz } from "drizzle-orm/gel-core";
 import { pgTable, timestamp, varchar, uuid, text } from "drizzle-orm/pg-core";
 
 
@@ -28,3 +29,19 @@ export const chirps = pgTable("chirps", {
 });
 
 export type Chirp = typeof chirps.$inferInsert;
+
+export const refreshTokens = pgTable("refresh_tokens", {
+  token: text("token").primaryKey().notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+  userID: uuid("user_id")
+    .references(() => users.id, {onDelete: 'cascade'})
+    .notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  revokedAt: timestamp("revoked_at"), 
+});
+
+export type RefreshToken = typeof refreshTokens.$inferInsert;

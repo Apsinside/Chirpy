@@ -15,7 +15,6 @@ export async function resetUsers() {
   await db.delete(users);
 }
 
-
 export async function getUser(userEmail: string) {
   const [result] = await db
     .select()

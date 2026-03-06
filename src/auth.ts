@@ -2,6 +2,8 @@ import * as argon2 from "argon2";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request} from "express";
 import {config} from "./config.js"
+import crypto from "crypto";
+import { BadRequestError } from "./errors.js";
 
 
 export async function hashPassword(password: string){
@@ -67,10 +69,14 @@ export function getBearerToken(req: Request): string{
     }
 
     const splitHeader = header.split(" ");
-    if(splitHeader.length === 1){
-        throw new Error(`Missing token string in authorization header`);
+    if (splitHeader.length < 2 || splitHeader[0] !== "Bearer") {
+        throw new BadRequestError("Malformed authorization header");
     }
 
     return splitHeader[1];
-
 }
+
+export function makeRefreshToken(): string{
+    const hexString = crypto.randomBytes(32).toString('hex');
+    return hexString;
+} 
