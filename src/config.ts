@@ -3,6 +3,7 @@ import type { MigrationConfig } from "drizzle-orm/migrator";
 type APIConfig = {
   fileserverHits: number;
   platform: string;
+  polkaApiKey: string;
 };
 
 type DBConfig = {
@@ -41,7 +42,8 @@ const migrationConfig: MigrationConfig = {
 export const config : Config = {
   api: {
     fileserverHits: 0,
-    platform : envOrThrow("PLATFORM")
+    platform : envOrThrow("PLATFORM"),
+    polkaApiKey: envOrThrow("POLKA_KEY")
   },
   db: {
     url:  envOrThrow("DB_URL"),

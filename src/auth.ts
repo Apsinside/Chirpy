@@ -4,6 +4,8 @@ import { Request} from "express";
 import {config} from "./config.js"
 import crypto from "crypto";
 import { BadRequestError, UnauthorizedError } from "./errors.js";
+import { REPLCommand } from "repl";
+import { get } from "http";
 
 
 export async function hashPassword(password: string){
@@ -80,3 +82,17 @@ export function makeRefreshToken(): string{
     const hexString = crypto.randomBytes(32).toString('hex');
     return hexString;
 } 
+
+export function getApiKey(req: Request): string{
+    const header = req.get('Authorization');
+    if(!header){
+        throw new UnauthorizedError(`Invalid authorization header`);
+    }
+
+    const splitHeader = header.split(" ");
+    if (splitHeader.length < 2 || splitHeader[0] !== "ApiKey") {
+        throw new BadRequestError("Malformed authorization header");
+    }
+
+    return splitHeader[1];
+}

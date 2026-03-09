@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { makeJWT, validateJWT, hashPassword, checkPasswordHash, getBearerToken } from "../src/auth.js";
+import { makeJWT, validateJWT, hashPassword, checkPasswordHash, getBearerToken, getApiKey } from "../src/auth.js";
 import { Request } from "express";
 
 describe("Password Hashing", () => {
@@ -79,5 +79,41 @@ describe("JWT", () => {
     } as Request; // We cast it to Request so TypeScript is happy
 
     expect(() => getBearerToken(mockRequest)).toThrow();
+   });
+
+    it("should return true for correct api key from auth header", async() => {
+    const mockRequest = {
+        get: (name: string) => {
+        if (name === "Authorization") {
+            return "ApiKey my-secret-api-key";
+        }
+        return undefined;
+        }
+    } as Request; // We cast it to Request so TypeScript is happy
+
+    const token = getApiKey(mockRequest);
+    expect(token).toEqual("my-secret-api-key");
+   });
+
+   it("should throw for missing api key from auth header", async() => {
+    const mockRequest = {
+        get: (name: string) => {
+        if (name === "Authorization") {
+            return "ApiKey";
+        }
+        return undefined;
+        }
+    } as Request; // We cast it to Request so TypeScript is happy
+
+    expect(() => getApiKey(mockRequest)).toThrow();
+   });
+    it("should throw for missing api key header", async() => {
+    const mockRequest = {
+        get: (name: string) => {
+         return undefined;
+        }
+    } as Request; // We cast it to Request so TypeScript is happy
+
+    expect(() => getApiKey(mockRequest)).toThrow();
    });
 });
