@@ -30,7 +30,8 @@ export async function handlerCreateUser(req: Request, res: Response){
         id: result.id,
         email: result.email,
         createdAt: result.createdAt,
-        updatedAt: result.updatedAt
+        updatedAt: result.updatedAt,
+        isChirpyRed: result.isChirpyRed
     }
     
     res.status(201).json(resBody);
@@ -79,7 +80,8 @@ export async function handlerUpdateUser(req: Request, res: Response){
         id: updateResult.id,
         email: updateResult.email,
         createdAt: updateResult.createdAt,
-        updatedAt: updateResult.updatedAt
+        updatedAt: updateResult.updatedAt,
+        isChirpyRed: updateResult.isChirpyRed
     }
     res.status(200).json(resBody);
 }

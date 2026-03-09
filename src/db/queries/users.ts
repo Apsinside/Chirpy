@@ -39,3 +39,12 @@ export async function updateUser(user : NewUser){
    .returning();
    return result;
 }
+
+export async function upgradeUser(userID: string){
+    const [result] = await db
+   .update(users)
+   .set({isChirpyRed: true })
+   .where(eq(users.id, userID))
+   .returning();
+   return result;
+}

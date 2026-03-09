@@ -41,7 +41,8 @@ export async function handlerLoginUser(req: Request, res: Response){
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
         token: accessToken,
-        refreshToken: refreshTokenString
+        refreshToken: refreshTokenString,
+        isChirpyRed: user.isChirpyRed
     }
 
     res.status(200).json(resBody);
