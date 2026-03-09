@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { BadRequestError, NotFoundError, UnauthorizedError } from "../errors.js";
-import { createChirp, getChirp, getChirps } from "../db/queries/chirps.js";
+import { BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError } from "../errors.js";
+import { createChirp, deleteChirp, getChirp, getChirps } from "../db/queries/chirps.js";
 import { getBearerToken, validateJWT } from "../auth.js";
 import { config } from "../config.js";
-
 
 export async function handlerChirpsGet(req: Request, res: Response){
     const {chirpId} =  req.params;
@@ -64,4 +63,28 @@ function filterProfanity(text: string) : string{
         }
     }
     return split.join(' ')
+}
+
+export async function handlerChirpsDelete(req: Request, res: Response){
+    let accessTokenString = getBearerToken(req);
+    const tokenUserID = validateJWT(accessTokenString!, config.jwt.secret);
+    
+    const {chirpId} =  req.params;
+    if(typeof chirpId !== "string"){
+        throw new BadRequestError("Invalid chirp ID");
+    }
+    
+    const chirp = await getChirp(chirpId);
+    if (!chirp ) {
+        throw new NotFoundError(`Chirp with chirpId: ${chirpId} not found`);
+    }
+    if( chirp.userId !== tokenUserID ){
+        throw new ForbiddenError("Chirp does not belong to current user");
+    }
+
+    const deleteResult = await deleteChirp(chirpId);
+    if(!deleteResult){
+        throw new Error(`Failed to delete chirp with chirpId: ${chirpId}`);
+    }
+    res.status(204).send();
 }

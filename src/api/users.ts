@@ -4,10 +4,6 @@ import { NewUser, RefreshToken } from "../db/schema.js";
 import { createUser, getUserByID, updateUser } from "../db/queries/users.js";
 import { hashPassword, checkPasswordHash, makeJWT, getBearerToken, makeRefreshToken, validateJWT  } from "../auth.js";
 import { config } from "../config.js";
-import { createRefreshToken, getRefreshTokenFromTokenString, getUserFromRefreshToken } from "../db/queries/refresh.js";
-import { ExtraConfigColumn } from "drizzle-orm/pg-core/index.js";
-import { unionAll } from "drizzle-orm/gel-core/index.js";
-
 
 type userWithoutPassword = Omit<NewUser, "hashedPassword">;
 
