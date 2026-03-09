@@ -32,16 +32,7 @@ export async function  handlerChirpsCreate(req: Request, res: Response){
     const params: parameters = req.body;
 
     const token = getBearerToken(req);
-    let tokenUserID;
-    try{
-        tokenUserID = validateJWT(token, config.jwt.secret);
-    }catch(err){
-        if(err instanceof Error){
-            throw new UnauthorizedError(err.message);
-        }
-        throw new UnauthorizedError("JWT validation failed");
-    }
-
+    const tokenUserID  = validateJWT(token, config.jwt.secret);
 
     if(params.body.length > 140){
         throw new BadRequestError("Chirp is too long. Max length is 140");

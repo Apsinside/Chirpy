@@ -3,12 +3,11 @@ import { handlerReadiness } from "./api/readiness.js";
 import { middlewareLogResponses, middlewareMetricsInc, errorMiddleware } from "./middleware.js";
 import { handlerMetrics} from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
-import { handlerValidate } from "./api/validate.js";
 import { config } from "./config.js";
 import postgres from "postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { handlerCreateUser } from "./api/users.js";
+import { handlerCreateUser, handlerUpdateUser } from "./api/users.js";
 import { handlerChirpsCreate, handlerChirpsRetrieve, handlerChirpsGet } from "./api/chirps.js";
 import { handlerRefresh, handlerRevoke, handlerLoginUser } from "./api/auth.js";
 
@@ -45,6 +44,9 @@ app.post("/api/chirps", (req, res, next) => {
 app.post("/api/users", (req, res, next) => {
   Promise.resolve(handlerCreateUser(req,res)).catch(next)
 });
+app.put("/api/users", (req, res, next) => {
+  Promise.resolve(handlerUpdateUser(req,res)).catch(next)
+});
 app.post("/api/login", (req, res, next) => {
   Promise.resolve(handlerLoginUser(req,res)).catch(next)
 });
@@ -54,6 +56,8 @@ app.post("/api/refresh", (req, res, next) => {
 app.post("/api/revoke", (req, res, next) => {
   Promise.resolve(handlerRevoke(req,res)).catch(next)
 });
+
+
 
 
 app.use(errorMiddleware);

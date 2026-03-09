@@ -57,7 +57,7 @@ GET http://localhost:8080/admin/metrics HTTP/1.1
 
 POST http://localhost:8080/api/chirps HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHkiLCJzdWIiOiI3YTMwYjExZS02NGNkLTQwZmItYWE4Yy0zNWQzNTU2ZGMxMzgiLCJpYXQiOjE3NzI3OTA4MDIsImV4cCI6MTc3Mjc5NjgwMn0.BGH1RaYpvQ1Ts1Je7xFNb5aB4FPStFnVrVMbBpOYDZ4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHkiLCJzdWIiOiI5YzM4MzgxMi0zNTYzLTQzZjUtYjhlZS00ZTg2YTJhN2IxZWIiLCJpYXQiOjE3NzMwNTA2MDYsImV4cCI6MTc3MzA1NDIwNn0.fwesuMQKuF0Wwzjwx4RRKpAvPH_i7YX_3fPREGPwLXY
 
 {
   "body": "I'm always kind!",
@@ -71,3 +71,13 @@ GET http://localhost:8080/api/chirps HTTP/1.1
 ###
 
 GET http://localhost:8080/api/chirps/e2a1b8dd-ae48-4010-a912-c00386104aa0 HTTP/1.1
+
+###
+
+POST http://localhost:8080/api/revoke HTTP/1.1
+Authorization: Bearer eab8adfeb6b6960c1ead114d8358622a23b65f64f0a8bfbfd1bccd3fb6314aab
+
+###
+
+POST http://localhost:8080/api/refresh HTTP/1.1
+Authorization: Bearer 7ac1d3b73f1f4899d96e4716e8f25834cc356355db98a9f175dd677ad8e4ef31

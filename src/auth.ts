@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request} from "express";
 import {config} from "./config.js"
 import crypto from "crypto";
-import { BadRequestError } from "./errors.js";
+import { BadRequestError, UnauthorizedError } from "./errors.js";
 
 
 export async function hashPassword(password: string){
@@ -11,9 +11,9 @@ export async function hashPassword(password: string){
         return await argon2.hash(password);
     } catch (err) {
         if(err instanceof Error){
-            throw new Error(`Failed to create password hash with error: ${err.message}`);
+            throw new UnauthorizedError(`Failed to create password hash with error: ${err.message}`);
         }
-        throw new Error(`Failed to create password hash`);
+        throw new UnauthorizedError(`Failed to create password hash`);
     }
 } 
 
@@ -22,9 +22,9 @@ export async function checkPasswordHash (password: string, hash: string){
         return await argon2.verify(hash, password);
     } catch (err) {
         if(err instanceof Error){
-            throw new Error(`Failed to verify password hash with error: ${err.message}`);
+            throw new UnauthorizedError(`Failed to verify password hash with error: ${err.message}`);
         }
-        throw new Error(`Failed to verify password hash`);
+        throw new UnauthorizedError(`Failed to verify password hash`);
     }
 }
 
@@ -48,24 +48,24 @@ export function validateJWT(tokenString: string, secret: string): string{
     try{
         const tokenPayload = jwt.verify(tokenString, secret);
         if(typeof tokenPayload === 'string'){
-            throw new Error("Invalid token type");
+            throw new UnauthorizedError("Invalid token type");
         }
         if (!tokenPayload.sub) {
-            throw new Error("Token is missing the subject field");
+            throw new UnauthorizedError("Token is missing the subject field");
         }
         return tokenPayload.sub;
     }catch(err){
         if(err instanceof Error){
-            throw new Error(`JWT validation failed with error: ${err.message}`);
+            throw new UnauthorizedError(`JWT validation failed with error: ${err.message}`);
         }
-        throw new Error(`JWT validation failed with`);
+        throw new UnauthorizedError(`JWT validation failed with`);
     }
 }
 
 export function getBearerToken(req: Request): string{
     const header = req.get('Authorization');
     if(!header){
-        throw new Error(`Invalid authorization header`);
+        throw new UnauthorizedError(`Invalid authorization header`);
     }
 
     const splitHeader = header.split(" ");

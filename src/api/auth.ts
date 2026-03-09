@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { NotFoundError, UnauthorizedError } from "../errors.js";
-import { getUser } from "../db/queries/users.js";
+import { getUserByEmail } from "../db/queries/users.js";
 import { checkPasswordHash, makeJWT, makeRefreshToken, getBearerToken,  } from "../auth.js";
 import { config } from "../config.js";
 import { verifyParameters } from "../api/users.js"
@@ -15,7 +15,7 @@ export async function handlerLoginUser(req: Request, res: Response){
    
     const params: parameters = req.body;
     verifyParameters(params);
-    const user = await getUser(params.email);
+    const user = await getUserByEmail(params.email);
     if(!user){
         throw new NotFoundError("User does not exist");
     }
