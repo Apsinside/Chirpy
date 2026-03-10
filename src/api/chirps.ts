@@ -19,7 +19,13 @@ export async function handlerChirpsGet(req: Request, res: Response){
 }
 
 export async function handlerChirpsRetrieve(req: Request, res: Response){
-    const result = await getChirps();
+    let authorId: undefined | string;
+    let authorIdQuery = req.query.authorId;
+    if (typeof authorIdQuery === "string") {
+        authorId = authorIdQuery;
+    }
+
+    const result = await getChirps(authorId);
     res.status(200).json(result);
 }
 
@@ -73,7 +79,7 @@ export async function handlerChirpsDelete(req: Request, res: Response){
     if(typeof chirpId !== "string"){
         throw new BadRequestError("Invalid chirp ID");
     }
-    
+
     const chirp = await getChirp(chirpId);
     if (!chirp ) {
         throw new NotFoundError(`Chirp with chirpId: ${chirpId} not found`);

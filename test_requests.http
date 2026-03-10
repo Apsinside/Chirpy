@@ -81,3 +81,8 @@ Authorization: Bearer eab8adfeb6b6960c1ead114d8358622a23b65f64f0a8bfbfd1bccd3fb6
 
 POST http://localhost:8080/api/refresh HTTP/1.1
 Authorization: Bearer 7ac1d3b73f1f4899d96e4716e8f25834cc356355db98a9f175dd677ad8e4ef31
+
+###
+
+POST http://localhost:8080/api/polka/webhooks HTTP/1.1
+Authorization: Bearer 7ac1d3b73f1f4899d96e4716e8f25834cc356355db98a9f175dd677ad8e4ef31

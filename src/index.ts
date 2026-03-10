@@ -63,9 +63,6 @@ app.delete("/api/chirps/:chirpId", (req, res, next) => {
   Promise.resolve(handlerChirpsDelete(req,res)).catch(next)
 });
 
-
-
-
 app.use(errorMiddleware);
 
 app.listen(PORT, () => {
