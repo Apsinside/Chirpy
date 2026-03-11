@@ -145,6 +145,11 @@ Retrieves a single chirp by its ID.
 #### `POST /api/chirps`
 Creates a new chirp. Requires a valid JWT bearer token.
 
+**Headers:**
+```
+Authorization: Bearer ${Access Token}
+```
+
 **Request body:**
 ```json
 {
