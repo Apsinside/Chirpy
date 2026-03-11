@@ -10,9 +10,6 @@ export async function handlerChirpsGet(req: Request, res: Response){
         throw new BadRequestError("Invalid chirp ID");
     }
     
-
-
-
     const result = await getChirp(chirpId);
     if (!result) {
         throw new NotFoundError(`Chirp with chirpId: ${chirpId} not found`);
