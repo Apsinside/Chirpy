@@ -82,8 +82,9 @@ Creates a new user account.
 Updates the authenticated user's information. Requires a valid JWT bearer token.
 
 **Headers:**
-
+```
 Authorization: Bearer ${Access Token}
+```
 
 **Request body:**
 ```json
@@ -120,16 +121,17 @@ Authenticates a user and returns access and refresh tokens.
 Issues a new access token using a valid refresh token. Provide the refresh token as a bearer token in the `Authorization` header.
 
 **Headers:**
-
+```
 Authorization: Bearer ${Refresh Token}
+```
 
 #### `POST /api/revoke`
 Revokes a refresh token, effectively logging the user out. Provide the refresh token as a bearer token in the `Authorization` header.
 
 **Headers:**
-
+```
 Authorization: Bearer ${Refresh Token}
-
+```
 ---
 
 ### Chirps
@@ -154,9 +156,9 @@ Creates a new chirp. Requires a valid JWT bearer token.
 Deletes a chirp by ID. Requires a valid JWT bearer token. Only the chirp's author can delete it.
 
 **Headers:**
-
+```
 Authorization: Bearer ${Access Token}
-
+```
 ---
 
 ### Webhooks
@@ -165,9 +167,9 @@ Authorization: Bearer ${Access Token}
 Endpoint for receiving webhook events from Polka. Requires a valid Polka API key in the `Authorization` header.
 
 **Headers:**
-
+```
 Authorization: ApiKey ${Polka API Key}
-
+```
 ---
 
 ## Static Files
