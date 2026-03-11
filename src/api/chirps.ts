@@ -9,6 +9,9 @@ export async function handlerChirpsGet(req: Request, res: Response){
     if(typeof chirpId !== "string"){
         throw new BadRequestError("Invalid chirp ID");
     }
+    
+
+
 
     const result = await getChirp(chirpId);
     if (!result) {
@@ -25,7 +28,10 @@ export async function handlerChirpsRetrieve(req: Request, res: Response){
         authorId = authorIdQuery;
     }
 
-    const result = await getChirps(authorId);
+    let sortParameterQuery = req.query.sort;
+    let sortDesc = typeof sortParameterQuery === "string" && sortParameterQuery === "desc";
+
+    const result = await getChirps(sortDesc, authorId);
     res.status(200).json(result);
 }
 
